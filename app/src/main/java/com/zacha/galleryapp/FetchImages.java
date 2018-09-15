@@ -31,25 +31,33 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
         List result = new ArrayList();
         Integer totalCount = photos.size();
         Integer currentIndex = 0;
+        Bitmap bitmapThumbnail = null;
         for (FlickrPhoto photo : photos) {
             currentIndex++;
-            List sizes = flickr.getFlickrPhotos().getSizes(photo.getId());
-            String thumbnailUrl = sizes.get(0).getSource();
-            String mediumUrl = sizes.get(4).getSource();
-            InputStream inputStreamThumbnail = null,inputStreamMedium=null;
+            URL smallPhotoURL = null;
             try {
-                inputStreamThumbnail = new URL(thumbnailUrl).openStream();
-                inputStreamMedium = new URL(mediumUrl).openStream();
+                smallPhotoURL = flickr.getFlickrPhotos().getSmallPhoto(photo.getURL());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            InputStream inputStreamSmall = null;
+            try {
+                inputStreamSmall = smallPhotoURL.openStream();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Bitmap bitmapThumbnail = BitmapFactory.decodeStream(inputStreamThumbnail);
-            Bitmap bitmapMedium = BitmapFactory.decodeStream(inputStreamMedium);
-            result.add(new ImageInfo(photo.getTitle(),bitmapThumbnail ,bitmapMedium ));
-            publishProgress(currentIndex, totalCount);
+            bitmapThumbnail = BitmapFactory.decodeStream(inputStreamSmall);
+            //result.add(new ImageInfo(photo.getTitle(),bitmapThumbnail ,bitmapMedium ));
+            //publishProgress(currentIndex, totalCount);
         }
-        currentAppData.setImageInfos(result);*/
-        //return result;
-        return null;
+        //currentAppData.setImageInfos(result);
+        return bitmapThumbnail;
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap result){
+
     }
 }

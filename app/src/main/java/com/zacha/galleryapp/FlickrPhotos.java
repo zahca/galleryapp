@@ -37,7 +37,6 @@ public class FlickrPhotos{
         StringBuffer response = new StringBuffer();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
-            System.out.println(inputLine);
 
         }
         in.close();
@@ -51,7 +50,6 @@ public class FlickrPhotos{
         for(int i = 0 ; i < jsonArray.length() ; i++){
             jsonObject =  jsonArray.getJSONObject(i);
             title = jsonObject.get("title").toString();
-            System.out.println(title);
             photoURL = new URL("https://api.flickr.com/services/rest/?api_key=949e98778755d1982f537d56236bbb42&photo_id=" + jsonObject.get("id").toString() +
                     "&farm=" +jsonObject.get("farm").toString() + "&server=" + jsonObject.get("server") + " &method=flickr.photos.getSizes");
 
@@ -59,5 +57,26 @@ public class FlickrPhotos{
         }
 
         return photos;
+    }
+
+    public URL getSmallPhoto(URL url) throws IOException, JSONException {
+        HttpURLConnection  connection = (HttpURLConnection) url.openConnection();
+        int responseCode = connection.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+
+        }
+        JSONObject jsonObj = XML.toJSONObject(response.toString());
+        System.out.println(jsonObj);
+        JSONObject jsonObject = jsonObj.getJSONObject("rsp").getJSONObject("sizes").getJSONArray("size").getJSONObject(0);
+
+        return new URL(jsonObject.getJSONObject("source").toString());
     }
 }
