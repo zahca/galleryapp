@@ -2,23 +2,31 @@ package com.zacha.galleryapp;
 
 import android.media.Image;
 
+import java.net.URL;
+
 public class FlickrPhoto {
     Image img;
-    private Integer imgSize; //find out which units they use
-    private Integer imgHeight;
-    private Integer imgWidth;
+    private URL url;
+    private Integer size; //find out which units they use
+    private Integer height;
+    private Integer width;
     private String title;
 
-    public Integer getImgSize(){
-        return this.imgSize;
+    public FlickrPhoto(URL url, String title ) {
+            this.url = url;
+            this.title = title;
     }
 
-    public Integer getImgHeight(){
-        return this.imgHeight;
+    public Integer getSize(){
+        return this.size;
     }
 
-    public Integer getImgWidth(){
-        return this.imgWidth;
+    public Integer getHeight(){
+        return this.height;
+    }
+
+    public Integer getWidth(){
+        return this.width;
     }
 
     public String getTitle(){

@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -17,8 +19,15 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
 
     @Override
     protected Bitmap doInBackground(ImageView... imageViews) {
-        Flickr flickr = new Flickr(ConstantValues.FLICKR_API_KEY, ConstantValues.FLICKR_FORMAT);
-        List<FlickrPhoto> photos = flickr.getFlickrPhotos().getPhotos();
+        Flickr flickr = new Flickr(null, "UTF-8");
+        List<FlickrPhoto> photos = null;
+        try {
+            photos = flickr.getFlickrPhotos().getPhotos();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         List result = new ArrayList();
         Integer totalCount = photos.size();
         Integer currentIndex = 0;
@@ -39,7 +48,8 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
             result.add(new ImageInfo(photo.getTitle(),bitmapThumbnail ,bitmapMedium ));
             publishProgress(currentIndex, totalCount);
         }
-        currentAppData.setImageInfos(result);
-        return result;
+        currentAppData.setImageInfos(result);*/
+        //return result;
+        return null;
     }
 }
