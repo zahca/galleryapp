@@ -1,5 +1,6 @@
 package com.zacha.galleryapp;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -10,12 +11,19 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
 
-    ImageView imageView;
+    FlickrPhotoAdapter photoAdapter;
+    Context context;
+
+    public FetchImages(FlickrPhotoAdapter photoAdapter, Context context){
+        super();
+        this.photoAdapter = photoAdapter;
+        this.context = context;
+    }
+
 
     @Override
     protected Bitmap doInBackground(ImageView... imageViews) {
@@ -28,12 +36,8 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        List result = new ArrayList();
-        Integer totalCount = photos.size();
-        Integer currentIndex = 0;
         Bitmap bitmapThumbnail = null;
         for (FlickrPhoto photo : photos) {
-            currentIndex++;
             URL smallPhotoURL = null;
             try {
                 smallPhotoURL = flickr.getFlickrPhotos().getSmallPhoto(photo.getURL());
@@ -49,15 +53,14 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
                 e.printStackTrace();
             }
             bitmapThumbnail = BitmapFactory.decodeStream(inputStreamSmall);
-            //result.add(new ImageInfo(photo.getTitle(),bitmapThumbnail ,bitmapMedium ));
-            //publishProgress(currentIndex, totalCount);
+            photoAdapter.onImageDownload(bitmapThumbnail);
         }
         //currentAppData.setImageInfos(result);
         return bitmapThumbnail;
     }
 
-    @Override
-    protected void onPostExecute(Bitmap result){
 
+    @Override
+    protected void onPostExecute( Bitmap bitmap ) {
     }
 }

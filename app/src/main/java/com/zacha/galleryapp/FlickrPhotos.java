@@ -73,10 +73,13 @@ public class FlickrPhotos{
             response.append(inputLine);
 
         }
+        in.close();
         JSONObject jsonObj = XML.toJSONObject(response.toString());
         System.out.println(jsonObj);
         JSONObject jsonObject = jsonObj.getJSONObject("rsp").getJSONObject("sizes").getJSONArray("size").getJSONObject(0);
-
-        return new URL(jsonObject.getJSONObject("source").toString());
+        System.out.println(jsonObject);
+        String source = jsonObject.getString("source");
+        System.out.println(source);
+        return new URL(source.toString());
     }
 }
