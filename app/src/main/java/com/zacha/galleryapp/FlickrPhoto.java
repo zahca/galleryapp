@@ -30,7 +30,7 @@ public class FlickrPhoto {
     }
 
     public String getTitle(){
-        return this.getTitle();
+        return this.title;
     }
     public URL getURL(){
         return this.url;

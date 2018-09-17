@@ -53,7 +53,7 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
                 e.printStackTrace();
             }
             bitmapThumbnail = BitmapFactory.decodeStream(inputStreamSmall);
-            photoAdapter.onImageDownload(bitmapThumbnail);
+            photoAdapter.onImageDownload(bitmapThumbnail,photo);
         }
         //currentAppData.setImageInfos(result);
         return bitmapThumbnail;
