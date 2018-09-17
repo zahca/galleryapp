@@ -14,22 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlickrPhotos{
-    private String apiKey;
-    private String format;
 
-    public FlickrPhotos(String apiKey, String format){
-        this.apiKey = apiKey;
-        this.format = format;
+    public FlickrPhotos(){
     }
 
     public List<FlickrPhoto> getPhotos() throws IOException, JSONException {
-        String url = "https://api.flickr.com/services/rest/?api_key=949e98778755d1982f537d56236bbb42&tags=Cool&method=flickr.photos.search";
+        String url = "https://api.flickr.com/services/rest/?api_key=949e98778755d1982f537d56236bbb42&tags=Toronto&method=flickr.photos.search";
         URL obj = new URL(url);
 
         HttpURLConnection  connection = (HttpURLConnection) obj.openConnection();
-        int responseCode = connection.getResponseCode();
-        //System.out.println("\nSending 'GET' request to URL : " + url);
-        //System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
@@ -59,11 +52,8 @@ public class FlickrPhotos{
         return photos;
     }
 
-    public URL getSmallPhoto(URL url) throws IOException, JSONException {
+    public URL getSmallPhoto(URL url, FlickrPhoto flickrPhoto) throws IOException, JSONException {
         HttpURLConnection  connection = (HttpURLConnection) url.openConnection();
-        int responseCode = connection.getResponseCode();
-       // System.out.println("\nSending 'GET' request to URL : " + url);
-        //System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
@@ -75,11 +65,14 @@ public class FlickrPhotos{
         }
         in.close();
         JSONObject jsonObj = XML.toJSONObject(response.toString());
-        //System.out.println(jsonObj);
         JSONObject jsonObject = jsonObj.getJSONObject("rsp").getJSONObject("sizes").getJSONArray("size").getJSONObject(3);
-        //System.out.println(jsonObject);
+        System.out.println(jsonObject);
         String source = jsonObject.getString("source");
-        //System.out.println(source);
+        Integer width = jsonObject.getInt("width");
+        Integer height = jsonObject.getInt("height");
+        flickrPhoto.setWidth(width);
+        flickrPhoto.setHeight(height);
+
         return new URL(source.toString());
     }
 }

@@ -27,7 +27,7 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
 
     @Override
     protected Bitmap doInBackground(ImageView... imageViews) {
-        Flickr flickr = new Flickr(null, "UTF-8");
+        Flickr flickr = new Flickr();
         List<FlickrPhoto> photos = null;
         try {
             photos = flickr.getFlickrPhotos().getPhotos();
@@ -40,7 +40,7 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
         for (FlickrPhoto photo : photos) {
             URL smallPhotoURL = null;
             try {
-                smallPhotoURL = flickr.getFlickrPhotos().getSmallPhoto(photo.getURL());
+                smallPhotoURL = flickr.getFlickrPhotos().getSmallPhoto(photo.getURL(), photo);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -53,6 +53,7 @@ public class FetchImages extends AsyncTask<ImageView,Void,Bitmap> {
                 e.printStackTrace();
             }
             bitmapThumbnail = BitmapFactory.decodeStream(inputStreamSmall);
+            photo.setSize(bitmapThumbnail.getByteCount());
             photoAdapter.onImageDownload(bitmapThumbnail,photo);
         }
         //currentAppData.setImageInfos(result);

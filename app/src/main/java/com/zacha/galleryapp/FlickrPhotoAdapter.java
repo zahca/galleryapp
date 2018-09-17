@@ -5,10 +5,6 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -41,28 +37,20 @@ public class FlickrPhotoAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        ImageView imageView;
-        LinearLayout container ;
-        TextView textView;
+
         PhotoInfo photoInfo = new PhotoInfo(activity.getApplicationContext());
         FlickrPhoto flickrPhoto = flickrPhotos.get(i);
         if (convertView == null) {
-
-            textView = new TextView(activity.getApplicationContext());
-
-            imageView = new ImageView(activity.getApplicationContext());
-            imageView.setLayoutParams(new GridView.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(0, 0, 0, 0);
+            //photoInfo.setPadding(5,5,5,5);
 
         } else {
             photoInfo = (PhotoInfo) convertView;
         }
 
-        photoInfo.setTextView(flickrPhoto.getTitle());
-
+        photoInfo.setTextView(flickrPhoto.getTitle() + '\n' + flickrPhoto.getWidth() + " x " + flickrPhoto.getHeight() +
+                                '\n' + flickrPhoto.getSize() + " bytes");
         photoInfo.setImageView(bitmaps.get(i));
-        //container.findViewWithTag(i).imageView.setImageBitmap(bitmaps.get(i));
+
         return photoInfo;
     }
 

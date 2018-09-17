@@ -36,5 +36,16 @@ public class FlickrPhoto {
         return this.url;
     }
 
+    public void setWidth(Integer width){
+        this.width = width;
+    }
+
+    public void setHeight(Integer height){
+        this.height = height;
+    }
+
+    public void setSize(Integer size){
+        this.size = size;
+    }
 
 }
