@@ -1,7 +1,7 @@
 # galleryapp
 
 Main Components of the app:
-MainActivity: Starting place of the application, which launches the aynscronus task (network layer), Fetch Images.
+MainActivity: Starting place of the application, which launches the asyncronus task (network layer), Fetch Images.
 FetchImages: subclass of AsyncTask, which calls Flickr object.
 Flickr: calls FlickrPhotos object to gather the images using the flickr api.
 FlickrPhotos: contains elements of type FlickrPhoto, each of which hold relevant info of a particular image from Flickr.
@@ -14,5 +14,6 @@ Important Notes:
 from Flickr based on tags=Toronto.
 
 Future Improvements:
+-Figure out how to better parse the information for Flickr.
 -Make an EditText and search button in main layout, to change the tags parameter in the query api.
 -Encapsulate the api_key within FlickrPhotos class
